@@ -171,6 +171,9 @@ def reduce_vocab(vocab, embed_vocab, bow_data, embed_aggregate='mean'):
             break
         stemmed_reduced_embed_vocab[w] = new_w_embed
 
+
+    print("The vocabulary has been reduced from %s words to %s words. This represents a reduction of %s percent" %(len(vocab), len(stemmed_reduced_vocab), round((len(stemmed_reduced_vocab)/len(vocab))*100,2)))
+    
     return (stemmed_reduced_vocab,
             stemmed_reduced_embed_vocab,
             stemmed_reduced_bow_data)
@@ -192,7 +195,7 @@ def fit_topics(data, embeddings, vocab, K):
 
     return topics, lda_centers, topic_proportions
 
-def load_wmd(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20):
+def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20):
 
     data, y = transform_dataframe(df)
     y = y - 1
