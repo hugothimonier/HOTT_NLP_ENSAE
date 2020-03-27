@@ -205,7 +205,7 @@ def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20):
 
     if stemming :
         vocab1, embed_vocab1, vocab_, vocab_count, bow_data1 = gen_data(data, embed_path)
-        vocad, embed_vocab, bow_data = reduce_vocab(vocab1, embed_vocab1, bow_data1, embed_aggregate='mean') 
+        vocab, embed_vocab, bow_data = reduce_vocab(vocab1, embed_vocab1, bow_data1, embed_aggregate='mean') 
 
     embeddings = np.array([embed_vocab[w] for w in vocab])
 
