@@ -172,7 +172,7 @@ def reduce_vocab(vocab, embed_vocab, bow_data, embed_aggregate='mean'):
         stemmed_reduced_embed_vocab[w] = new_w_embed
 
 
-    print("The vocabulary has been reduced from %s words to %s words. This represents a reduction of %s percent" %(len(vocab), len(stemmed_reduced_vocab), round((len(stemmed_reduced_vocab)/len(vocab))*100,2)))
+    print("The vocabulary has been reduced from %s words to %s words." %(len(vocab), len(stemmed_reduced_vocab)))
     
     return (stemmed_reduced_vocab,
             stemmed_reduced_embed_vocab,
