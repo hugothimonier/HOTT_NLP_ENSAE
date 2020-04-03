@@ -78,9 +78,9 @@ def gen_data(data, embed_path):
     
     all_embed_vocab = {}
     with open(embed_path, 'r') as file:
-      for line in progressbar.progressbar(file.readlines()):
-          word, vec = line.split(' ', 1)
-          all_embed_vocab[word] = np.fromstring(vec, sep=' ')
+    	for line in progressbar.progressbar(file.readlines()):
+    		word, vec = line.split(' ', 1)
+    		all_embed_vocab[word] = np.fromstring(vec, sep=' ')
         
     
     S=set(np.concatenate(data))
@@ -210,7 +210,7 @@ def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20):
     embeddings = np.array([embed_vocab[w] for w in vocab])
 
     print("computing LDA")
-    topics, lda_centers, topic_proportions = fit_topics(
+    topics, lda_centers, topic_proportions, topics_words = fit_topics(
         bow_data, embeddings, vocab, K)
 
     print("computing distance")
@@ -227,8 +227,8 @@ def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20):
             cost_topics[i, j] = sparse_ot(topics[i], topics[j], cost_embeddings)
     cost_topics = cost_topics + cost_topics.T
 
-    out = {'vocab':vocab,'X': bow_data, 'y': y,
-           'text' : vocab_,
+    out = {'vocab': vocab,'X': bow_data, 'y': y,
+           'text' : data,
            'embeddings': embeddings,
            'topics': topics, 'proportions': topic_proportions, 'topic_words' : topics_words,
            'cost_E': cost_embeddings, 'cost_T': cost_topics}
