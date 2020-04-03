@@ -16,25 +16,39 @@ from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.preprocessing import LabelEncoder
 import re
 
-def transform_dataframe(df):
+def transform_dataframe(df, section = 'sectionName'):
 
-    le = LabelEncoder()
+	valid = {'sectionName', 'newDesk'}
+	
+	if section not in valid:
+		raise ValueError("results: section must be one of %r." % valid)
 
-    # on conserve que les colonnes qui nous interessent 
-    df1 = df[['newDesk','commentBody']]
-    # on encode la variable y qui correspond aux catégories du NYT
-    x=df1[['newDesk']].apply(lambda col: le.fit_transform(col))
-    y = np.asarray(x)
+	le = LabelEncoder()
+
+	if section == 'sectionName' :
+		# on conserve que les colonnes qui nous intéressent 
+		df1 = df[['sectionName','commentBody']]
+    	# on encode la variable y qui correspond aux catégories du NYT
+		x=df1[['sectionName']].apply(lambda col: le.fit_transform(col))
+
+
+	if section == 'newDesk':
+        # on conserve que les colonnes qui nous intéressent 
+		df1 = df[['newDesk','commentBody']]
+    	# on encode la variable y qui correspond aux catégories du NYT
+		x=df1[['newDesk']].apply(lambda col: le.fit_transform(col))
+
+	y = np.asarray(x)
 
     # str preprocessing 
-    a= df1['commentBody'].apply(lambda x: remove_html_tags(x))
-    b= a.apply(lambda x: re.sub(r'[^\w\s]','',x))
-    c= b.apply(lambda x: x.lower())
+	a= df1['commentBody'].apply(lambda x: remove_html_tags(x))
+	b= a.apply(lambda x: re.sub(r'[^\w\s]','',x))
+	c= b.apply(lambda x: x.lower())
      
     #tokenization
-    vocab_2 = c.apply(lambda x: np.asarray(TreebankWordTokenizer().tokenize(x)))
+	vocab_2 = c.apply(lambda x: np.asarray(TreebankWordTokenizer().tokenize(x)))
 
-    return vocab_2, y
+	return vocab_2, y
 
 def remove_html_tags(text):
     """Remove html tags from a string"""
@@ -192,48 +206,53 @@ def fit_topics(data, embeddings, vocab, K):
 
     return topics, lda_centers, topic_proportions, topics_words
 
-def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20):
+def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20, section = 'sectionName'):
 
-    data, y = transform_dataframe(df)
-    y = y - 1
+	if section == 'sectionName' :
+		data, y = transform_dataframe(df)
+
+	if section == 'newDesk' :
+		data, y = transform_dataframe(df, section = 'newDesk')
+
+	y = y - 1
 
 
-    if not stemming :
-        vocab, embed_vocab, bow_data = gen_data(data, embed_path)
+	if not stemming :
+		vocab, embed_vocab, bow_data = gen_data(data, embed_path)
 
-    if stemming :
-        
-        vocab1, embed_vocab1, bow_data1 = gen_data(data, embed_path)
-        print("stemming")
-        vocab, embed_vocab, bow_data = reduce_vocab(vocab1, embed_vocab1, bow_data1, embed_aggregate='mean') 
+	if stemming :
 
-    embeddings = np.array([embed_vocab[w] for w in vocab])
+		vocab1, embed_vocab1, bow_data1 = gen_data(data, embed_path)
+		print("stemming")
+		vocab, embed_vocab, bow_data = reduce_vocab(vocab1, embed_vocab1, bow_data1, embed_aggregate='mean') 
 
-    print("computing LDA")
-    topics, lda_centers, topic_proportions, topics_words = fit_topics(
-        bow_data, embeddings, vocab, K)
+	embeddings = np.array([embed_vocab[w] for w in vocab])
 
-    print("computing distance")
-    cost_embeddings = euclidean_distances(embeddings, embeddings) ** p
-    cost_topics = np.zeros((topics.shape[0], topics.shape[0]))
+	print("computing LDA")
+	topics, lda_centers, topic_proportions, topics_words = fit_topics(
+		bow_data, embeddings, vocab, K)
 
-    for k in range(K):
-        to_0_idx = np.argsort(-topics[k])[n_word_keep:]
-        topics[k][to_0_idx] = 0
+	print("computing distance")
+	cost_embeddings = euclidean_distances(embeddings, embeddings) ** p
+	cost_topics = np.zeros((topics.shape[0], topics.shape[0]))
+
+	for k in range(K):
+		to_0_idx = np.argsort(-topics[k])[n_word_keep:]
+		topics[k][to_0_idx] = 0
     
-    print("computing optimal transport calculation")
-    for i in range(cost_topics.shape[0]):
-        for j in range(i + 1, cost_topics.shape[1]):
-            cost_topics[i, j] = sparse_ot(topics[i], topics[j], cost_embeddings)
-    cost_topics = cost_topics + cost_topics.T
+	print("computing optimal transport calculation")
+	for i in range(cost_topics.shape[0]):
+		for j in range(i + 1, cost_topics.shape[1]):
+			cost_topics[i, j] = sparse_ot(topics[i], topics[j], cost_embeddings)
+	cost_topics = cost_topics + cost_topics.T
 
-    out = {'vocab': vocab,'X': bow_data, 'y': y,
-           'text' : data,
-           'embeddings': embeddings,
-           'topics': topics, 'proportions': topic_proportions, 'topic_words' : topics_words,
-           'cost_E': cost_embeddings, 'cost_T': cost_topics}
+	out = {'vocab': vocab,'X': bow_data, 'y': y,
+			'text' : data,
+			'embeddings': embeddings,
+			'topics': topics, 'proportions': topic_proportions, 'topic_words' : topics_words,
+			'cost_E': cost_embeddings, 'cost_T': cost_topics}
 
-    return out
+	return out
 
 
 
