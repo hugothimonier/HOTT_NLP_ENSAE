@@ -1,4 +1,4 @@
-The repo contains the work of Clément Guillo (ENSAE, ENS Paris Saclay) and Hugo Thimonier (ENSAE, ENS Paris Saclay) which focuses on applying Hierarchical Optimal Topic Transport (Yurochkin et al. 2019) to predict NYT comment categories using the Kaggle dataset(https://www.kaggle.com/aashita/nyt-comments).
+The repo contains the work of Clément Guillo (ENSAE, ENS Paris Saclay) and Hugo Thimonier (ENSAE, ENS Paris Saclay) which focuses on applying Hierarchical Optimal Topic Transport (Yurochkin et al. 2019) to predict NYT comment categories using the Kaggle dataset (https://www.kaggle.com/aashita/nyt-comments).
 
 Our work focuses on a subsample of the comments posted in April 2018 which allows to balance the dataset according to the categories we whish to predict.
 
