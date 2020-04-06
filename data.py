@@ -16,7 +16,38 @@ from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.preprocessing import LabelEncoder
 import re
 
-def transform_dataframe(df, section = 'sectionName'):
+
+def balanced_sample_maker(X, y, sample_size, random_seed=None):
+    """ return a balanced data set by sampling all classes with sample_size 
+        current version is developed on assumption that the positive
+        class is the minority.
+
+    Parameters:
+    ===========
+    X: {numpy.ndarrray}
+    y: {numpy.ndarray}
+    """
+    uniq_levels = np.unique(y)
+    uniq_counts = {level: sum(y == level) for level in uniq_levels}
+
+    if not random_seed is None:
+        np.random.seed(random_seed)
+
+    # find observation index of each class levels
+    groupby_levels = {}
+    for ii, level in enumerate(uniq_levels):
+        obs_idx = [idx for idx, val in enumerate(y) if val == level]
+        groupby_levels[level] = obs_idx
+    # oversampling on observations of each label
+    balanced_copy_idx = []
+    for gb_level, gb_idx in groupby_levels.items():
+        over_sample_idx = np.random.choice(gb_idx, size=sample_size, replace=True).tolist()
+        balanced_copy_idx+=over_sample_idx
+    np.random.shuffle(balanced_copy_idx)
+
+    return (X[balanced_copy_idx], y[balanced_copy_idx], balanced_copy_idx)
+
+def transform_dataframe(df, section = 'newDesk', balance = False):
 
 	valid = {'sectionName', 'newDesk'}
 	
@@ -25,18 +56,77 @@ def transform_dataframe(df, section = 'sectionName'):
 
 	le = LabelEncoder()
 
-	if section == 'sectionName' :
-		# on conserve que les colonnes qui nous intéressent 
-		df1 = df[['sectionName','commentBody']]
+	if section == 'newDesk':
+
+		if balance : 
+			unique, counts = np.unique(df['newDesk'], return_counts = True)
+			a = dict(zip(unique, counts))
+
+		# We delete the categories that have less than 200 observations 
+			to_del = []
+			for key in a.keys():
+				if a[key] < 200 :
+					to_del.append(key)
+			df = df[~df['newDesk'].isin(to_del)].reset_index(drop = True)
+			unique_, counts_ = np.unique(df['newDesk'], return_counts = True)
+			a = dict(zip(unique_, counts_))
+		
+	# Create a balanced sample
+
+			X = df['commentBody']
+			y = df['newDesk']
+
+			X_, y_ , idxs_ = balanced_sample_maker(X, y, 220, random_seed=None)
+			df = df[df.index.isin(idxs_)].reset_index(drop = True)
+			df = df[~df['newDesk'].isin(['Podcasts','NYTNow'])].reset_index(drop = True)
+
+	# on conserve que les colonnes qui nous intéressent 
+			df1 = df[['newDesk','commentBody']]
+			df1.to_csv('reduced_dataframe.csv')
+			del X_, y_ , idxs_
+
+		else :
+			df1 = df[['newDesk','commentBody']]
+
     	# on encode la variable y qui correspond aux catégories du NYT
+		x=df1[['newDesk']].apply(lambda col: le.fit_transform(col))
+
+	if section == 'sectionName' :
+
+		if balance :
+
+			unique, counts = np.unique(df['sectionName'], return_counts = True)
+			a = dict(zip(unique, counts))
+
+		# We delete the categories that have less than 200 observations 
+			to_del = []
+			for key in a.keys():
+				if a[key] < 200 :
+					to_del.append(key)
+			df = df[~df['sectionName'].isin(to_del)].reset_index(drop = True)
+			unique_, counts_ = np.unique(df['sectionName'], return_counts = True)
+			a = dict(zip(unique_, counts_))
+		
+	# Create a balanced sample
+
+			X = df['commentBody']
+			y = df['sectionName']
+
+			X_, y_ , idxs_ = balanced_sample_maker(X, y, 220, random_seed=None)
+			df = df[df.index.isin(idxs_)].reset_index(drop = True)
+
+		# on conserve que les colonnes qui nous intéressent 
+			df1 = df[['sectionName','commentBody']]
+			df1.to_csv('reduced_dataframe.csv')
+			del X_, y_ , idxs_
+
+		else : 
+			df1 = df[['sectionName','commentBody']]
+
+		# on encode la variable y qui correspond aux catégories du NYT
 		x=df1[['sectionName']].apply(lambda col: le.fit_transform(col))
 
 
-	if section == 'newDesk':
-        # on conserve que les colonnes qui nous intéressent 
-		df1 = df[['newDesk','commentBody']]
-    	# on encode la variable y qui correspond aux catégories du NYT
-		x=df1[['newDesk']].apply(lambda col: le.fit_transform(col))
 
 	y = np.asarray(x)
 
@@ -206,13 +296,19 @@ def fit_topics(data, embeddings, vocab, K):
 
     return topics, lda_centers, topic_proportions, topics_words
 
-def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20, section = 'sectionName'):
+def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20, section = 'newDesk', balance = False):
 
 	if section == 'sectionName' :
-		data, y = transform_dataframe(df)
+		if balance : 
+			data, y = transform_dataframe(df, balance = True)
+		else : 
+			data, y = transform_dataframe(df)
 
 	if section == 'newDesk' :
-		data, y = transform_dataframe(df, section = 'newDesk')
+		if balance :
+			data, y = transform_dataframe(df, section = 'newDesk', balance = True)
+		else : 
+			data, y = transform_dataframe(df, section = 'newDesk')
 
 	y = y - 1
 
