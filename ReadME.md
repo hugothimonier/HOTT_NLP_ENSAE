@@ -17,8 +17,3 @@ The repo contains :
  <p>
 	To run the file you need to download the Glove pretrained embedding (https://nlp.stanford.edu/projects/glove/). 
 </p>
-
-<p>
-	<b> Future work to be done </b> : 
-	<p> (i) rework on the stopword removal function because it does not seem to work as the LDA topics seem to show -> leads to bad performance of the model </p>
-	<p> (ii) contruct another hott functions that allows t-sne function to use it (see doc for the function requisits) </p>
