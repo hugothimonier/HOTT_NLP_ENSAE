@@ -300,9 +300,9 @@ def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20, sect
 
 	if section == 'sectionName' :
 		if balance : 
-			data, y = transform_dataframe(df, balance = True)
+			data, y = transform_dataframe(df, section = 'sectionName', balance = True)
 		else : 
-			data, y = transform_dataframe(df)
+			data, y = transform_dataframe(df, section = 'sectionName')
 
 	if section == 'newDesk' :
 		if balance :
