@@ -76,7 +76,7 @@ def transform_dataframe(df, section = 'newDesk', balance = False):
 			X = df['commentBody']
 			y = df['newDesk']
 
-			X_, y_ , idxs_ = balanced_sample_maker(X, y, 500, random_seed=None)
+			X_, y_ , idxs_ = balanced_sample_maker(X, y, 220, random_seed=None)
 			df = df[df.index.isin(idxs_)].reset_index(drop = True)
 			df = df[~df['newDesk'].isin(['Podcasts','NYTNow'])].reset_index(drop = True)
 
@@ -89,7 +89,6 @@ def transform_dataframe(df, section = 'newDesk', balance = False):
 			df1 = df[['newDesk','commentBody']]
 
     	# on encode la variable y qui correspond aux catégories du NYT
-		lib=np.array(df1[['newDesk']].copy())
 		x=df1[['newDesk']].apply(lambda col: le.fit_transform(col))
 
 	if section == 'sectionName' :
@@ -113,7 +112,7 @@ def transform_dataframe(df, section = 'newDesk', balance = False):
 			X = df['commentBody']
 			y = df['sectionName']
 
-			X_, y_ , idxs_ = balanced_sample_maker(X, y, 500, random_seed=None)
+			X_, y_ , idxs_ = balanced_sample_maker(X, y, 220, random_seed=None)
 			df = df[df.index.isin(idxs_)].reset_index(drop = True)
 
 		# on conserve que les colonnes qui nous intéressent 
@@ -125,8 +124,6 @@ def transform_dataframe(df, section = 'newDesk', balance = False):
 			df1 = df[['sectionName','commentBody']]
 
 		# on encode la variable y qui correspond aux catégories du NYT
-		
-		lib=np.array(df1[['sectionName']].copy())
 		x=df1[['sectionName']].apply(lambda col: le.fit_transform(col))
 
 
@@ -141,7 +138,7 @@ def transform_dataframe(df, section = 'newDesk', balance = False):
     #tokenization
 	vocab_2 = c.apply(lambda x: np.asarray(TreebankWordTokenizer().tokenize(x)))
 
-	return vocab_2, y, lib
+	return vocab_2, y
 
 def remove_html_tags(text):
     """Remove html tags from a string"""
@@ -303,15 +300,15 @@ def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20, sect
 
 	if section == 'sectionName' :
 		if balance : 
-			data, y, lib= transform_dataframe(df, section = 'sectionName', balance = True)
+			data, y = transform_dataframe(df, section = 'sectionName', balance = True)
 		else : 
-			data, y, lib = transform_dataframe(df, section = 'sectionName')
+			data, y = transform_dataframe(df, section = 'sectionName')
 
 	if section == 'newDesk' :
 		if balance :
-			data, y, lib = transform_dataframe(df, section = 'newDesk', balance = True)
+			data, y = transform_dataframe(df, section = 'newDesk', balance = True)
 		else : 
-			data, y, lib = transform_dataframe(df, section = 'newDesk')
+			data, y = transform_dataframe(df, section = 'newDesk')
 
 	y = y - 1
 
@@ -345,7 +342,7 @@ def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20, sect
 			cost_topics[i, j] = sparse_ot(topics[i], topics[j], cost_embeddings)
 	cost_topics = cost_topics + cost_topics.T
 
-	out = {'vocab': vocab,'X': bow_data, 'y': y, 'lib': lib,
+	out = {'vocab': vocab,'X': bow_data, 'y': y,
 			'text' : data,
 			'embeddings': embeddings,
 			'topics': topics, 'proportions': topic_proportions, 'topic_words' : topics_words,
