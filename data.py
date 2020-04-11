@@ -4,7 +4,7 @@ from sklearn.decomposition import LatentDirichletAllocation as lda
 import time
 from sklearn.feature_extraction.text import CountVectorizer
 
-from hott import sparse_ot
+from .hott import sparse_ot
 import progressbar
 import nltk
 from sklearn.metrics.pairwise import euclidean_distances
