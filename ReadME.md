@@ -21,6 +21,8 @@ When reducing the categories to only 7 (Dining,  Games,  Foreign,  ArtsLeisure, 
   <img width = '80% height = '80%' src="https://github.com/hugothimonier/HOTT_NLP_ENSAE/blob/master/img/T_SNE_7.png">
 </p>
 
+The similiraties and differences that the t-sne representation suggests can also be found in the confusion matrix of our model, where we can observe clear confusion pattern : when Climate is not correctly predicted, the most recurrent error is to  predict Foreign, the converse is also true. Similarly,the most  correctly  predicted category is Science, which was the most isolatedcategory on the graph.   Finally,  the Art category which was the least isolated category on the graph is  also  the  category  which  is  the  least  correctly predicted.
+
 The repo contains :
 <p> 
 	<b> .py files </b> :
