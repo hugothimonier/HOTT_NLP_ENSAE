@@ -47,6 +47,8 @@ def balanced_sample_maker(X, y, sample_size, random_seed=None):
 
     return (X[balanced_copy_idx], y[balanced_copy_idx], balanced_copy_idx)
 
+
+
 def transform_dataframe(df, section = 'newDesk', balance = False, cat_freq = 150):
 
 	valid = {'sectionName', 'newDesk'}
@@ -299,19 +301,19 @@ def fit_topics(data, embeddings, vocab, K):
 
     return topics, lda_centers, topic_proportions, topics_words
 
-def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20, section = 'newDesk', balance = False):
+def load_data(df, embed_path, stemming = True, K=70, p=1, n_word_keep = 20, section = 'newDesk', balance = False, cat_freq =150):
 
 	if section == 'sectionName' :
 		if balance : 
-			data, y, lib= transform_dataframe(df, section = 'sectionName', balance = True)
+			data, y, lib= transform_dataframe(df, section = 'sectionName', balance = True, cat_freq = cat_freq)
 		else : 
-			data, y, lib = transform_dataframe(df, section = 'sectionName')
+			data, y, lib = transform_dataframe(df, section = 'sectionName', cat_freq = cat_freq)
 
 	if section == 'newDesk' :
 		if balance :
-			data, y, lib = transform_dataframe(df, section = 'newDesk', balance = True)
+			data, y, lib = transform_dataframe(df, section = 'newDesk', balance = True, cat_freq = cat_freq)
 		else : 
-			data, y, lib = transform_dataframe(df, section = 'newDesk')
+			data, y, lib = transform_dataframe(df, section = 'newDesk', cat_freq = cat_freq)
 
 	y = y - 1
 
