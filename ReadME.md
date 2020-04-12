@@ -41,20 +41,20 @@ The similiraties and differences that the t-sne representation suggests can also
 </p>
 
 
-### Repo description
+## Repo description
 
-#### .py files
+### .py files
 
 <p> • data.py which contains the functions required to load dataset in the format required to perform our analysis</p>
 <p> • distances.py which contains the distances metric functions used in the papers we refer to (mostly wmd) </p>
 <p> • hott.py which contains the hott metric functions </p>
 <p> • knn_classifer.py which contains the functions that allow the knn classification using the homemade metrics </p>
 
-#### Folder
+### Folder
 <p> <b> Folder 'Report' </b> : contains the report of our work. </p>
 <p> <b> Folder 'papier' </b> : contains the papers on which our analysis is based. </p>
-<p> <b> File 'NYT_dataset' </b> : contains the dataset used to perform our analysis. </p>
-<p> <b> File 'notebook' </b> : contains the notebook to run the functions (could be replaced by .py later on) and the generated files. <p>
+<p> <b> Folder 'NYT_dataset' </b> : contains the dataset used to perform our analysis. </p>
+<p> <b> Folder 'notebook' </b> : contains the notebook to run the functions (could be replaced by .py later on) and the generated files. <p>
 
  <p>
 	To run the file you need to download the Glove pretrained embedding (https://nlp.stanford.edu/projects/glove/). 
