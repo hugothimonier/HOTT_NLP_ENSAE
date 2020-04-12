@@ -1,11 +1,19 @@
-The repo contains the work of Clément Guillo (ENSAE, ENS Paris Saclay) and Hugo Thimonier (ENSAE, ENS Paris Saclay) which focuses on applying Hierarchical Optimal Topic Transport (Yurochkin et al. 2019) to predict NYT comment categories using the Kaggle dataset (https://www.kaggle.com/aashita/nyt-comments).
+The repo contains the work of <b> Clément Guillo </b>(ENSAE, ENS Paris Saclay) and <b>Hugo Thimonier </b>(ENSAE, ENS Paris Saclay) which focuses on applying Hierarchical Optimal Topic Transport (Yurochkin et al. 2019) to predict NYT comment categories using the Kaggle dataset (https://www.kaggle.com/aashita/nyt-comments).
 
-Our work focuses on a subsample of the comments posted in April 2018 which allows to balance the dataset according to the categories we whish to predict. Our approach consists in first trying to predict the categories of the article considering the 31 categories. However, our knn classification using the HOTT metric performs porrly suggesting that comments are not different enough in terms of topics they address between categories. The t-sne representation also supports that statement as well as the confusion matrix which does not display any confusion pattern for any category.
+Our work focuses on a subsample of the comments posted in April 2018 balanced according to the categories we whish to predict. Our approach consists in first trying to predict the categories of the article considering the 31 categories. However, our knn classification using the HOTT metric performs porrly suggesting that comments are not different enough in terms of topics they address between categories. 
+
+The t-sne following representation supports that statement as it shows how all categories are mixed in the topic space. 
 
 <p align="center">
   <img src="https://github.com/hugothimonier/HOTT_NLP_ENSAE/blob/master/img/T_SNE_30.png">
 </p>
 
+Similarly, the confusion matrix does not display any confusion pattern for any category also suggesting no clear topic differences in the comments between categories.
+
+
+<p align="center">
+  <img src="https://github.com/hugothimonier/HOTT_NLP_ENSAE/blob/master/img/confusion_matrix_30.png">
+</p>
 
 The repo contains :
 <p> 
