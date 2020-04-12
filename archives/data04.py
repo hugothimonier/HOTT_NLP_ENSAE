@@ -47,7 +47,7 @@ def balanced_sample_maker(X, y, sample_size, random_seed=None):
 
     return (X[balanced_copy_idx], y[balanced_copy_idx], balanced_copy_idx)
 
-def transform_dataframe(df, section = 'newDesk', balance = False, cat_freq = 150):
+def transform_dataframe(df, section = 'newDesk', balance = False):
 
 	valid = {'sectionName', 'newDesk'}
 	
@@ -76,7 +76,7 @@ def transform_dataframe(df, section = 'newDesk', balance = False, cat_freq = 150
 			X = df['commentBody']
 			y = df['newDesk']
 
-			X_, y_ , idxs_ = balanced_sample_maker(X, y, cat_freq, random_seed=None)
+			X_, y_ , idxs_ = balanced_sample_maker(X, y, 500, random_seed=None)
 			df = df[df.index.isin(idxs_)].reset_index(drop = True)
 			df = df[~df['newDesk'].isin(['Podcasts','NYTNow'])].reset_index(drop = True)
 
@@ -113,7 +113,7 @@ def transform_dataframe(df, section = 'newDesk', balance = False, cat_freq = 150
 			X = df['commentBody']
 			y = df['sectionName']
 
-			X_, y_ , idxs_ = balanced_sample_maker(X, y, cat_freq, random_seed=None)
+			X_, y_ , idxs_ = balanced_sample_maker(X, y, 500, random_seed=None)
 			df = df[df.index.isin(idxs_)].reset_index(drop = True)
 
 		# on conserve que les colonnes qui nous intéressent 
