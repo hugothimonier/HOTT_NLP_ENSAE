@@ -1,6 +1,19 @@
+### Objective of the present work
+
 The repo contains the work of <b> Clément Guillo </b>(ENSAE, ENS Paris Saclay) and <b>Hugo Thimonier </b>(ENSAE, ENS Paris Saclay) which focuses on applying Hierarchical Optimal Topic Transport (Yurochkin et al. 2019) to predict NYT comment categories using the Kaggle dataset (https://www.kaggle.com/aashita/nyt-comments).
 
-Our work focuses on a subsample of the comments posted in April 2018 balanced according to the categories we whish to predict. Our approach consists in first trying to predict the categories of the article considering the 31 categories. However, our knn classification using the HOTT metric performs porrly suggesting that comments are not different enough in terms of topics they address between categories. 
+### Methodology and results
+
+#### Data
+The dataset we studied is a balanced subsample of all comments posted in April 2018 on articles of the NYT website. The dataset is composed of 5971 comments, the average number of word per documents is 401, while it is 65 after removing stop words, words not contained in the Glove Embedding dataset, and removing words appearing less than twice . The vocabulary is comprised of 6250 words in total. 
+The dataset was constructed so that each category we whish to predict has more or less the same number of comments. For that matter, we removed the categories which did not have enough comments inside them, reducing the number of categories from 39 to 31.
+
+#### Methodology
+
+The HOTT metric dis used to perform knn classification. We proceed as follows : (i) we compute for each document <i> i </i> in the test sample its HOTT distance with every document in the training sample, (ii) we only keep the <i> k </i> nearest documents for each document <i> i </i> (where <i> k </i> is a hyperparameter to optimize) and finally we check the most recurrent label in the <i> k </i> nearest documents of document <i> i </i> and assign it to be its prediction.
+
+#### Results
+Our knn classification using the HOTT metric performs poorly when considering 31 categories. This suggests that comments are not different enough in terms of topics they address between categories. 
 
 The t-sne following representation supports that statement as it shows how all categories are mixed in the topic space. 
 
