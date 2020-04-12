@@ -5,7 +5,7 @@ Our work focuses on a subsample of the comments posted in April 2018 balanced ac
 The t-sne following representation supports that statement as it shows how all categories are mixed in the topic space. 
 
 <p align="center">
-  <img rc="https://github.com/hugothimonier/HOTT_NLP_ENSAE/blob/master/img/T_SNE_30.png">
+  <img height = '120%' width = '120%' src="https://github.com/hugothimonier/HOTT_NLP_ENSAE/blob/master/img/T_SNE_30.png">
 </p>
 
 Similarly, the confusion matrix does not display any confusion pattern for any category also suggesting no clear topic differences in the comments between categories.
