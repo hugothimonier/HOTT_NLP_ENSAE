@@ -5,7 +5,7 @@ Our work focuses on a subsample of the comments posted in April 2018 balanced ac
 The t-sne following representation supports that statement as it shows how all categories are mixed in the topic space. 
 
 <p align="center">
-  <img height = '120%' width = '120%' src="https://github.com/hugothimonier/HOTT_NLP_ENSAE/blob/master/img/T_SNE_30.png">
+  <img src="https://github.com/hugothimonier/HOTT_NLP_ENSAE/blob/master/img/T_SNE_30.png">
 </p>
 
 Similarly, the confusion matrix does not display any confusion pattern for any category also suggesting no clear topic differences in the comments between categories.
@@ -13,6 +13,12 @@ Similarly, the confusion matrix does not display any confusion pattern for any c
 
 <p align="center">
   <img src="https://github.com/hugothimonier/HOTT_NLP_ENSAE/blob/master/img/confusion_matrix_30.png">
+</p>
+
+When reducing the categories to only 7 (Dining,  Games,  Foreign,  ArtsLeisure,  Science,  Sportsand Climate), the model performances highly improve, displaying less than 40% of test error. This can be explained by high differences in terms of topics addressed in the comments as the following t-sne representation suggests. 
+
+<p align="center">
+  <img src="https://github.com/hugothimonier/HOTT_NLP_ENSAE/blob/master/img/T_SNE_7.png">
 </p>
 
 The repo contains :
