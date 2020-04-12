@@ -37,18 +37,19 @@ When reducing the categories to only 7 (Dining,  Games,  Foreign,  ArtsLeisure, 
 The similiraties and differences that the t-sne representation suggests can also be found in the confusion matrix of our model, where we can observe clear confusion pattern : when Climate is not correctly predicted, the most recurrent error is to  predict Foreign, the converse is also true. Similarly,the most  correctly  predicted category is Science, which was the most isolated category on the graph.   Finally,  the Art category which was the least isolated category on the graph is  also  the  category  which  is  the  least  correctly predicted.
 
 <p align="center">
-  <img width = '80% height = '80%' src="https://github.com/hugothimonier/HOTT_NLP_ENSAE/blob/master/img/confusion_matrix_7.png">
+  <img width = '80% height = '80%' src="https://github.com/hugothimonier/HOTT_NLP_ENSAE/blob/master/img/confusion_matrix.png">
 </p>
 
 
-The repo contains :
-<p> 
-	<b> .py files </b> :
-	<p> • data.py which contains the functions required to load dataset in the format required to perform our analysis </p>
-	<p> • distances.py which contains the distances metric functions used in the papers we refer to (mostly wmd) </p>
-	<p> • hott.py which contains the hott metric functions </p>
-	<p> • knn_classifer.py which contains the functions that allow the knn classification using the homemade metrics </p>
-</p>
+### Repo description
+
+#### .py files
+
+<p> • data.py which contains the functions required to load dataset in the format required to perform our analysis</p>
+<p> • distances.py which contains the distances metric functions used in the papers we refer to (mostly wmd) </p>
+<p> • hott.py which contains the hott metric functions </p>
+<p> • knn_classifer.py which contains the functions that allow the knn classification using the homemade metrics </p>
+
 <p> <b> File 'papier' </b> : contains the papers used to perform our analysis. </p>
 <p> <b> File 'dataset' </b> : contains the reduced dataset used to perform our analysis. </p>
 <p> <b> File 'notebook' </b> : contains the notebook to run the functions (could be replaced by .py later on) and the generated files. <p>
